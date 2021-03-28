@@ -50,7 +50,7 @@ We love things that simply work with minimal effort. Deploying your first DataPo
 -Without Mounted Volume Directories 
 ```
 
-    docker run -it -e DATAPOWER_ACCEPT_LICENSE=true -e  DATAPOWER_INTERACTIVE=true -p 9090:9090 ibmcom/datapower:latest
+    docker run -it -e DATAPOWER_ACCEPT_LICENSE=true -e  DATAPOWER_INTERACTIVE=true -p 9022:22 -p 5554:5554 -p 5550:5550 -p 8000-8010:8000-8010 -p 9090:9090 ibmcom/datapower:latest
 ```
 -With Mounted Volume Directories
 
@@ -59,7 +59,6 @@ mkdir config local certs
 
 
 ```
-$Datapower: 
 docker run -it --name datapower \
 -v $(pwd)/config:/opt/ibm/datapower/drouter/config \
 -v $(pwd)/local:/opt/ibm/datapower/drouter/local \

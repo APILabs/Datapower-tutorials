@@ -97,6 +97,7 @@ If using the docker lab environment(labs.play-with-docker.com) then Click on "op
 
 **Note**: If your docker machine is not running on localhost, enter the command `docker-machine ip` to find the host ip address.  
 8. Make a note of the directories created when you run the container. These directories are mounted from the container file system to your local file system. Any edits from your workstation are picked up immediately.
+
 ```
 $ ls
 config	local 

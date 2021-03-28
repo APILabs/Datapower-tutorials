@@ -88,14 +88,14 @@ We love things that simply work with minimal effort. Deploying your first DataPo
 
 7. Enable the Web GUI - this will be your primary development interface
 
-```docker
+    ```docker
     # configure terminal
     # web-mgmt
     # admin-state "enabled"
     # exit  
     ```
 
-8. Hooray! You have completed the initial setup. If u are using your own system to run this lab , you can use https://localhost:9090 to login to the webui.
+8. Hooray! You have completed the initial setup. If u are using your own system to run this lab , you can use <https://localhost:9090> to login to the webui.
 If using the docker lab environment(labs.play-with-docker.com) then Click on "open port and enter 9090". This will open a http url be default. Update the url to https and you should be able to see the webui screen.
 
 **Note**: If your docker machine is not running on localhost, enter the command `docker-machine ip` to find the host ip address.  

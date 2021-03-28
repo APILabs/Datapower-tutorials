@@ -71,7 +71,7 @@ We love things that simply work with minimal effort. Deploying your first DataPo
     ibmcom/datapower:latest
     ```
 
-    * **Note**
+    **Note**
 
     * **Ports:** Expose ports on the host system using (_-p nn:nn_) or let Docker choose the ports (_-p nn_). If you're running multiple containers on the same host system, you should let Docker choose the ports for you.
     * **/drouter/config** is the location where DataPower will persist the configuration using an easy to read and editable format.

@@ -1,7 +1,5 @@
 # Getting Started
 
-![demo](start-with-docker.gif)
-
 **Prerequisites**:
 
 -Docker

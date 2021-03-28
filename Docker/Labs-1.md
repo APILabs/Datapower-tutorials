@@ -55,18 +55,21 @@ We love things that simply work with minimal effort. Deploying your first DataPo
 -With Mounted Volume Directories
 
 You can create 3 subdirectories  - 
-mkdir config local certs
+mkdir config local certs. Give full permission to the folders
+chmod 777 *
 
+From the datapower directory
 
 ```
-docker run -it --name datapower \
--v $(pwd)/config:/opt/ibm/datapower/drouter/config \
--v $(pwd)/local:/opt/ibm/datapower/drouter/local \
--v $(pwd)/certs:/opt/ibm/datapower/root/secure/usrcerts \
--e DATAPOWER_ACCEPT_LICENSE="true" \
--e DATAPOWER_INTERACTIVE="true" \
--p 9090:9090 -p 9022:22 -p 5554:5554 -p 5550:5550 -p 8000-8010:8000-8010 \
-ibmcom/datapower:latest 
+
+    docker run -it --name datapower \
+    -v $(pwd)/config:/opt/ibm/datapower/drouter/config \
+    -v $(pwd)/local:/opt/ibm/datapower/drouter/local \
+    -v $(pwd)/certs:/opt/ibm/datapower/root/secure/usrcerts \
+    -e DATAPOWER_ACCEPT_LICENSE="true" \
+    -e DATAPOWER_INTERACTIVE="true" \
+    -p 9090:9090 -p 9022:22 -p 5554:5554 -p 5550:5550 -p 8000-8010:8000-8010 \
+    ibmcom/datapower:latest
 ```
 
     **Note:** 
@@ -78,7 +81,10 @@ ibmcom/datapower:latest
 5. Login to the CLI 
 
 ```
-docker attach <container_id> to enter the docker terminla. To complete the initial setup, default username is `admin` and also password is `admin`
+docker attach <container_id> to enter the docker terminal.
+```
+ To complete the initial setup, default username is `admin` and also password is `admin`
+
 6. Enable the Web GUI - this will be your primary development interface
     ```
     # configure terminal
@@ -86,8 +92,8 @@ docker attach <container_id> to enter the docker terminla. To complete the initi
     # admin-state "enabled"
     # exit  
     ```
-7. Hooray! You have completed the initial setup. If u are using your own system to run this lab , you can use https://localhost:9090 to login to the webui. If using the docker lab environment then 
-1. Click on "open port and enter 9090". This will open a http url be default. update the url to https and you should be able to see the webui screen.
+7. Hooray! You have completed the initial setup. If u are using your own system to run this lab , you can use https://localhost:9090 to login to the webui. 
+If using the docker lab environment(labs.play-with-docker.com) then Click on "open port and enter 9090". This will open a http url be default. Update the url to https and you should be able to see the webui screen.
 
 **Note**: If your docker machine is not running on localhost, enter the command `docker-machine ip` to find the host ip address.  
 8. Make a note of the directories created when you run the container. These directories are mounted from the container file system to your local file system. Any edits from your workstation are picked up immediately.

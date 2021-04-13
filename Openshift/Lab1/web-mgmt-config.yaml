@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: web-mgmt
+  namespace: cp4i
+binaryData:
+  web-mgmt.cfg: >-
+    d2ViLW1nbXQKICBhZG1pbi1zdGF0ZSBlbmFibGVkCiAgbG9jYWwtYWRkcmVzcyAwLjAuMC4wCiAgcG9ydCA5MDkwCiAgc2F2ZS1jb25maWctb3ZlcndyaXRlCiAgaWRsZS10aW1lb3V0IDkwMDAKICBzc2wtY29uZmlnLXR5cGUgc2VydmVyCmV4aXQ=

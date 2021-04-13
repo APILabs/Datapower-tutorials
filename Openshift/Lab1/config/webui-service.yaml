@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: datapower-quickstart
+  namespace: cp4i
+spec:
+  ports:
+    - name: webui
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+  selector:
+    app.kubernetes.io/instance: cp4i-quickstart
+  type: ClusterIP
+  sessionAffinity: None
+

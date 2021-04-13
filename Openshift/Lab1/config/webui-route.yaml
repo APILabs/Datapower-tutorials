@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: quickstart-webui
+  namespace: cp4i
+spec:
+  host: quickstart-webui-cp4i.apps.demo.ibmdte.net
+  to:
+    kind: Service
+    name: datapower-quickstart
+    weight: 100
+  port:
+    targetPort: webui
+  tls:
+    termination: passthrough
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None

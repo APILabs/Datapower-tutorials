@@ -1,0 +1,30 @@
+apiVersion: datapower.ibm.com/v1beta2
+kind: DataPowerService
+metadata:
+  name: quickstart
+  namespace: cp4i
+spec:
+  license:
+    accept: true
+    use: production
+  imagePullSecrets:
+    - ibm-entitlement-key
+  resources:
+    limits:
+      memory: 4Gi
+    requests:
+      cpu: 4
+      memory: 4Gi
+  users:
+    - name: admin
+      accessLevel: privileged
+      passwordSecret: admin-secret
+  domains:
+    - dpApp:
+        config:
+          - web-mgmt
+      name: default
+  version: 10.0-eus
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  

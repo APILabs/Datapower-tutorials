@@ -45,7 +45,7 @@ DataPower is now running in the background. Use `docker ps` to view the state of
     31e13aad5539        datapower           "/bin/drouter"      7 seconds ago       Up 16 seconds       0.0.0.0:6443->6443/tcp   datapower
     ```
 
-Next test the configuration by issuing the following curl command:
+    give it a minute for the datapower to be up and set up the domains. Next test the configuration by issuing the following curl command:
 
     ```curl -k https://localhost:6443/demo.html```
 
@@ -131,8 +131,8 @@ Open the Dockerfile using a text editor and add the following lines after `RUN s
 
         USER root
         RUN  set-user drouter \
-        && find /drouter/local /drouter/config -type d | xargs chmod 755 \
-        && find /drouter/local /drouter/config -type f | xargs chmod 644
+        && find /opt/ibm/datapower/drouter/local /opt/ibm/datapower/drouter/config -type d | xargs chmod 755 \
+        && find /opt/ibm/datapower/drouter/local /opt/ibm/datapower/drouter/config -type f | xargs chmod 644
         USER drouter
 
         EXPOSE 6443 9090
@@ -143,10 +143,10 @@ Build and confirm the image is still working as intended:
     ```docker
     docker kill datapower
 
-docker build . -t datapower
+docker build . -t datapower:2.0
 
-docker run --name datapower --rm -p 6443:6443 -p 9090:9090  -d datapower
-
+docker run --name datapower --rm -p 6443:6443 -p 9090:9090  -d datapower:2.0
+Give it a minute for the datapower to be up and set up the domains. Next test the configuration by issuing the following curl command:
     ```curl -k https://localhost:6443/demo.html```
 
 ## Conclusion

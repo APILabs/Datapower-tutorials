@@ -15,11 +15,11 @@ If there are previous images
 
 1. git clone <https://github.com/APILabs/Datapower-tutorials.git>
 
-2. Navigate to the folder Datapower-tutorials/Docker
+2. Navigate to the folder Datapower-tutorials/Docker/Lab2
 
 3. Lab2 uses the folder datapower-services/dp-demo to hold the custom application. Look through the file structure under dp-demo/drouter to see the files that will be mounted in the running container.
 
-4. go to the utils folder Datapower-tutorials/Docker/utils
+4. go to the utils folder Datapower-tutorials/Docker/Lab2/utils
 
 5. Run the below command ./testLocalDatapower.sh
    This command run the datapower image and mounts the dp-demo folder directory into the container.

@@ -26,12 +26,12 @@ Before you attempt this tutorial, please be sure that you:
 
 ## Lets first take a look at an example DataPower configuration
 
-This [project](https://github.com/ibm-datapower/datapower-tutorials/immutable-image) is a 
+This [project](https://github.com/ibm-datapower/datapower-tutorials/immutable-image) is a simple loopback (no backend required) HTTP service that responds back with details of the request in JSON format. The details of what the configuration does is not important here but that it is easy to test and verify before and after we make the image configuration immutable.
 
 ```git
-git clone <https://github.com/APILabs/Datapower-tutorials.git>
+git clone https://github.com/ibm-datapower/datapower-tutorials.git
 
-cd  Datapower-tutorials/Docker/Lab3
+cd immutable-image
 
 docker build . -t datapower
 

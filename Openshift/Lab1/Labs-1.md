@@ -18,11 +18,19 @@
 
 - move the directory openshift/Lab1
 
-login to openshift 
+- login to openshift
 
-oc project cp4i 
+- oc project cp4i
 
-oc apply admin-secret.yaml
+- oc apply admin-secret.yaml
+
+- oc apply web-mgmt-config.yaml
+
+- oc apply datapower.yaml
+
+- oc apply webui-service.yaml
+
+- oc apply webui-route.yaml
 
 
 

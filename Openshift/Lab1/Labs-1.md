@@ -6,16 +6,17 @@
 -If this is only for a poc you could also use the katacoda/kode cloud
 
 - use ibm demos url 
+ Link <https://www.ibm.com/cloud/garage/dte/tutorial/connect-app-integration-message-queue-using-cloud-pak-integration-using-openshift-42>
 
-- login to openshift 
+- Follow the Task1 steps mentioned on the demo url to start the environment and login to the environment
+  Log in to the Linux® desktop with userid: ibmuser and password: engageibm.
 
-- create project datapower
+- Once on the linux desktop login to the openshift console using FireFox. Use htpasswd option. The user details are already saved and should allow you to access the console.
 
-oc new-project datapower
+- go to the openshift project cp4i
+- git clone <https://github.com/APILabs/Datapower-tutorials.git>
 
-git clone 
-
-move the directory openshift/Lab1
+- move the directory openshift/Lab1
 
 login to openshift 
 

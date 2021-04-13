@@ -20,59 +20,58 @@ Using an immutable image allows you more certainty to know that what you have de
 
 Before you attempt this tutorial, please be sure that you:
 
-- Have Docker installed and running
+- Have Docker installed and running. If you dont have docker installed, you can use the <https://labs.play-with-docker.com> to create a docker environment to play with. This environment is available for 3 hrs.
 - Have run DataPower as described on the [DataPower Docker Hub page](https://hub.docker.com/r/ibmcom/datapower/)
 - Good understanding of Unix filesystem permissions
 
 ## Lets first take a look at an example DataPower configuration
 
-This [project](https://github.com/ibm-datapower/datapower-tutorials/immutable-image) is a 
+    ```
 
-```git
-git clone <https://github.com/APILabs/Datapower-tutorials.git>
+    git clone <https://github.com/APILabs/Datapower-tutorials.git>
 
-cd  Datapower-tutorials/Docker/Lab3
+    cd  Datapower-tutorials/Docker/Lab3
 
-docker build . -t datapower
+    docker build . -t datapower
 
-docker run --name datapower --rm -p 8080:8080 -d datapower
-```
+    docker run --name datapower --rm -p 8080:8080 -d datapower
+    ```
 
 DataPower is now running in the background. Use `docker ps` to view the state of the running container:
 
-```docker
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                    NAMES
-31e13aad5539        datapower           "/bin/drouter"      7 seconds ago       Up 16 seconds       0.0.0.0:8080->8080/tcp   datapower
-```
+    ```docker
+
+    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                    NAMES
+    31e13aad5539        datapower           "/bin/drouter"      7 seconds ago       Up 16 seconds       0.0.0.0:8080->8080/tcp   datapower
+    ```
 
 Next test the configuration by issuing the following curl command:
 
-```curl http://localhost:8080/stillmutable
-```
+    ```curl http://localhost:8080/stillmutable```
 
 If everything went successfully so far you should see the following response:
 
-```{"method":"GET","uri":"/stillmutable"}```
+    ```{"method":"GET","uri":"/stillmutable"}```
 
 ## Understanding the current Dockerfile contents
 
 Lets start by explaining some of key aspects of the example Dockerfile:
 
-```docker
- 1: FROM ibmcom/datapower:latest
- 2: ENV  DATAPOWER_ACCEPT_LICENSE=true \
- 3:      DATAPOWER_INTERACTIVE=true \
- 4:      DATAPOWER_FAST_STARTUP=true
- 5:
- 6: COPY src/config /drouter/config
- 7: COPY src/local /drouter/local
- 8:
- 9: USER root
-10: RUN  set-user drouter
-11: USER drouter
-12:
-13: EXPOSE 8080
-```
+    ```docker
+    1: FROM ibmcom/datapower:latest
+    2: ENV  DATAPOWER_ACCEPT_LICENSE=true \
+    3:      DATAPOWER_INTERACTIVE=true \
+    4:      DATAPOWER_FAST_STARTUP=true
+    5:
+    6: COPY src/config /drouter/config
+    7: COPY src/local /drouter/local
+    8:
+    9: USER root
+    10: RUN  set-user drouter
+    11: USER drouter
+    12:
+    13: EXPOSE 8080
+    ```
 
 Lines 1-3 can are explained [here](https://www.ibm.com/support/knowledgecenter/en/SS9H2Y_7.6.0/com.ibm.dp.doc/virtual_fordocker.html)
 
@@ -101,35 +100,35 @@ RUN find /drouter/local /drouter/config -type f | xargs chmod 644
 
 Combining the two lines into a single RUN command as per Dockerfile best practices, the completed Dockerfile should look like this:
 
-```docker
-FROM ibmcom/datapower:latest
-ENV  DATAPOWER_ACCEPT_LICENSE=true \
-     DATAPOWER_INTERACTIVE=true \
-     DATAPOWER_FAST_STARTUP=true
+    ```docker
+    FROM ibmcom/datapower:latest
+    ENV  DATAPOWER_ACCEPT_LICENSE=true \
+        DATAPOWER_INTERACTIVE=true \
+        DATAPOWER_FAST_STARTUP=true
 
-COPY src/config /drouter/config
-COPY src/local /drouter/local
+    COPY src/config /drouter/config
+    COPY src/local /drouter/local
 
-USER root
-RUN set-user drouter \
- && find /drouter/local /drouter/config -type d | xargs chmod 755 \
- && find /drouter/local /drouter/config -type f | xargs chmod 644
-USER drouter
+    USER root
+    RUN set-user drouter \
+    && find /drouter/local /drouter/config -type d | xargs chmod 755 \
+    && find /drouter/local /drouter/config -type f | xargs chmod 644
+    USER drouter
 
-EXPOSE 8080
+    EXPOSE 8080
 ```
 
 Build and confirm the image is still working as intended:
 
-```docker
-docker kill datapower
+    ```docker
+    docker kill datapower
 
 docker build . -t datapower
 
 docker run --name datapower --rm -p 8080:8080 -d datapower
 
-curl http://localhost:8080/immutable
-```
+    curl http://localhost:8080/immutable
+
 
 ## Conclusion
 

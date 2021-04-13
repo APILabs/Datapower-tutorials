@@ -40,4 +40,5 @@ local files - helloworld_gatewayscript.js
         - Copy the local files to the local folder.
             Example : root/Datapower/local/poc
         - Refresh the browser and check if the test application(MPG) is available on the poc domain.
+        
 5. Test the application to recieve a hello world message.

@@ -53,7 +53,8 @@ We love things that simply work with minimal effort. Deploying your first DataPo
     -With Mounted Volume Directories
 
     You can create 3 subdirectories  -
-    mkdir config local certs. Give full permission to the folders
+    mkdir config local certs.
+     Give full permission to the folders
     chmod 777 *
 
     From the datapower directory
@@ -86,8 +87,8 @@ We love things that simply work with minimal effort. Deploying your first DataPo
 
 7. Enable the Web GUI - this will be your primary development interface
 
-    ```docker
-    # configure terminal
+    ```script
+    # co
     # web-mgmt
     # admin-state "enabled"
     # exit  

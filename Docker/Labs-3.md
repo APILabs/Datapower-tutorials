@@ -32,9 +32,9 @@ Before you attempt this tutorial, please be sure that you:
 
     cd  Datapower-tutorials/Docker/Lab3
 
-    docker build . -t datapower
+    docker build . -t datapower:1.0
 
-    docker run --name datapower --rm -p 8080:8080 -d datapower
+    docker run --name datapower --rm -p 9090:9090 -p 6443:6443 -d datapower:1.0
     ```
 
 DataPower is now running in the background. Use `docker ps` to view the state of the running container:
@@ -42,16 +42,30 @@ DataPower is now running in the background. Use `docker ps` to view the state of
     ```docker
 
     CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                    NAMES
-    31e13aad5539        datapower           "/bin/drouter"      7 seconds ago       Up 16 seconds       0.0.0.0:8080->8080/tcp   datapower
+    31e13aad5539        datapower           "/bin/drouter"      7 seconds ago       Up 16 seconds       0.0.0.0:6443->6443/tcp   datapower
     ```
 
 Next test the configuration by issuing the following curl command:
 
-    ```curl http://localhost:8080/stillmutable```
+    ```curl -k https://localhost:6443/demo.html```
 
 If everything went successfully so far you should see the following response:
 
-    ```{"method":"GET","uri":"/stillmutable"}```
+    ```
+            <html lang="en" xml:lang="en">
+        <head>
+            <meta http-equiv="Pragma" content="no-cache"/>
+            <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+            <meta charset="UTF-8"/>
+            <title>DataPower Demo</title>
+        </head>
+        <body>
+        <H2>Welcome!</H2>
+        <P>You are now viewing a page returned from a custom application domain.
+        </P>
+        </body>
+        </html>
+    ```
 
 ## Understanding the current Dockerfile contents
 
@@ -61,62 +75,68 @@ Lets start by explaining some of key aspects of the example Dockerfile:
     1: FROM ibmcom/datapower:latest
     2: ENV  DATAPOWER_ACCEPT_LICENSE=true \
     3:      DATAPOWER_INTERACTIVE=true \
-    4:      DATAPOWER_FAST_STARTUP=true
+    4:      DATAPOWER_WORKER_THREADS=4
     5:
-    6: COPY src/config /drouter/config
-    7: COPY src/local /drouter/local
-    8:
-    9: USER root
-    10: RUN  set-user drouter
-    11: USER drouter
-    12:
-    13: EXPOSE 8080
+    6: COPY datapower-services/dp-demo/drouter/config /opt/ibm/datapower/drouter/config
+    7: COPY datapower-services/dp-demo/drouter/local /opt/ibm/datapower/drouter/local
+    8: COPY datapower-services/dp-demo/drouter/secure/usrcerts /opt/ibm/datapower/root/secure/usrcerts
+    9:
+    10: USER root
+    11: RUN chown -R drouter:root /opt/ibm/datapower/drouter/config \
+                          /opt/ibm/datapower/drouter/local \
+                          /opt/ibm/datapower/root/secure/usrcerts
+    12: RUN  set-user drouter
+    13: USER drouter
+    14:
+    15: EXPOSE 6443 9090
     ```
 
 Lines 1-3 can are explained [here](https://www.ibm.com/support/knowledgecenter/en/SS9H2Y_7.6.0/com.ibm.dp.doc/virtual_fordocker.html)
 
 Line 4 enables the fast startup option. This dramatically speeds up initial process load times and reduces the amount of memory needed to start the container. The catch is slower initial access to the WebUI, SOAP management and REST management services.
 
-Lines 6 & 7 copy our source into the image. `/drouter/config` contains the configuration files and `/drouter/local` contains other non-configuration files such as scripts and other ancillary files that are referenced by config. In our case it contains the echo.js GatewayScript implementation.
+Lines 6, 7 & 8 copy our source into the image. `/drouter/config` contains the configuration files and `/drouter/local` contains other non-configuration files such as scripts and other ancillary files that are referenced by config. `/drouter/secure/usrcerts` contains the certs that will be available for each domain.  
+To mount sharedcerts that can be accessible to all domains `/opt/ibm/datapower/root/secure/sharedcerts` folder can be used .
 
 By default, docker COPY will recursively copy files and directories with ownership under `root`. In this case root ownership is desired because all non-root users are automatically part of the `root` user group. With this knowledge we now know we will need to focus on `group` and `other` permissions to make our images immutable. COPY also typically preserves the file permissions found on the host or build system, therefore its always a best practice to explicitly set file and directory permissions after a COPY or ADD instructions.
 
-Line 9 is required because all DataPower images run as non-root and the RUN instruction inherits its user from the parent Dockerfile. So we are effectively switching back to the root user temporarily to make changes to the image.
+Line 10 is required because all DataPower images run as non-root and the RUN instruction inherits its user from the parent Dockerfile. So we are effectively switching back to the root user temporarily to make changes to the image.
 
-Line 10 runs a utility script to fixup permissions when switching from root to non-root.
+Line 11 sets the permissions for the drouter folders.
 
-Line 11 using the USER instruction to set the user name back to its default non-root value of drouter. The USER instruction sets the user name (or UID) to use when running the image and for any RUN, CMD and ENTRYPOINT instructions that follow.
+Line 12 using the USER instruction to set the user name back to its default non-root value of drouter. The USER instruction sets the user name (or UID) to use when running the image and for any RUN, CMD and ENTRYPOINT instructions that follow.
 
-Line 13 informs Docker that the container listens on TCP port 8080 at runtime. This is the port we configured the HTTP Frontside Protocol Handler to use.
+Line 14 informs Docker that the container listens on TCP port 9090 and 6443 at runtime. This is the port we configured the HTTP Frontside Protocol Handler to use.
 
 ## Time to make the configuration immutable
 
 Open the Dockerfile using a text editor and add the following lines after `RUN set-user drouter`. The first line recursively finds all directories in local and config (including local and config) and sets the permissions to `drwxr-xr-x`. The second line is similar but for normal files and sets the permissions to `-rw-r--r--`. Since process 0 runs as non-root (drouter), it cannot create new files or directories in these locations or move files in or out, or modify any existing files.
 
-```docker
-RUN find /drouter/local /drouter/config -type d | xargs chmod 755
-RUN find /drouter/local /drouter/config -type f | xargs chmod 644
-```
+    ```docker
+    RUN find /drouter/local /drouter/config -type d | xargs chmod 755
+    RUN find /drouter/local /drouter/config -type f | xargs chmod 644
+    ```
 
-Combining the two lines into a single RUN command as per Dockerfile best practices, the completed Dockerfile should look like this:
+    Combining the two lines into a single RUN command as per Dockerfile best practices, the completed Dockerfile should look like this:
 
     ```docker
-    FROM ibmcom/datapower:latest
-    ENV  DATAPOWER_ACCEPT_LICENSE=true \
-        DATAPOWER_INTERACTIVE=true \
-        DATAPOWER_FAST_STARTUP=true
+        FROM ibmcom/datapower:latest
+        ENV  DATAPOWER_ACCEPT_LICENSE=true \
+            DATAPOWER_INTERACTIVE=true \
+            DATAPOWER_WORKER_THREADS=4
 
-    COPY src/config /drouter/config
-    COPY src/local /drouter/local
+        COPY datapower-services/dp-demo/drouter/config /opt/ibm/datapower/drouter/config
+        COPY datapower-services/dp-demo/drouter/local /opt/ibm/datapower/drouter/local
+        COPY datapower-services/dp-demo/drouter/secure/usrcerts /opt/ibm/datapower/root/secure/usrcerts
 
-    USER root
-    RUN set-user drouter \
-    && find /drouter/local /drouter/config -type d | xargs chmod 755 \
-    && find /drouter/local /drouter/config -type f | xargs chmod 644
-    USER drouter
+        USER root
+        RUN  set-user drouter \
+        && find /drouter/local /drouter/config -type d | xargs chmod 755 \
+        && find /drouter/local /drouter/config -type f | xargs chmod 644
+        USER drouter
 
-    EXPOSE 8080
-```
+        EXPOSE 6443 9090
+    ```
 
 Build and confirm the image is still working as intended:
 
@@ -125,10 +145,9 @@ Build and confirm the image is still working as intended:
 
 docker build . -t datapower
 
-docker run --name datapower --rm -p 8080:8080 -d datapower
+docker run --name datapower --rm -p 6443:6443 -p 9090:9090  -d datapower
 
-    curl http://localhost:8080/immutable
-
+    ```curl -k https://localhost:6443/demo.html```
 
 ## Conclusion
 

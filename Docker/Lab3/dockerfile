@@ -5,9 +5,12 @@ ENV  DATAPOWER_ACCEPT_LICENSE=true \
 
 COPY datapower-services/dp-demo/drouter/config /opt/ibm/datapower/drouter/config
 COPY datapower-services/dp-demo/drouter/local /opt/ibm/datapower/drouter/local
-COPY datapower-services/dp-demo/drouter/secure /opt/ibm/datapower/root/secure/usrcerts
+COPY datapower-services/dp-demo/drouter/secure/usrcerts /opt/ibm/datapower/root/secure/usrcerts
 
 USER root
+RUN chown -R drouter:root /opt/ibm/datapower/drouter/config \
+                          /opt/ibm/datapower/drouter/local \
+                          /opt/ibm/datapower/root/secure/usrcerts
 RUN  set-user drouter
 USER drouter
 

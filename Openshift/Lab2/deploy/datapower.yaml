@@ -1,7 +1,7 @@
 apiVersion: datapower.ibm.com/v1beta2
 kind: DataPowerService
 metadata:
-  name: lab3-quickstart
+  name: quickstart
 spec:
   license:
     accept: true

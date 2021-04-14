@@ -26,7 +26,7 @@
     - Open the terminal application on the linux desktop and clone the repository.
          ```git clone <https://github.com/APILabs/Datapower-tutorials.git>```
 
-    - Change directory to  datapower-tutorials/Openshift/Lab2/deploy
+    - Change directory to  Datapower-tutorials/Openshift/Lab2/deploy
 
 5. Retrieve the openshift token
     - Retrive the login and openshift token from the console. and paste the oc login command .
@@ -49,7 +49,7 @@
     ``` ```
 
         To create the config map of the certs
-    ``` ```
+    ```oc create secret generic idp-crypto-secret --from-file=Datapower-tutorials/Openshift/Lab2/ --from-file=Datapower-tutorials/Openshift/Lab2/```
 
     Execute the commands to create the yaml files and create the resources.
     - Execute the below commands :

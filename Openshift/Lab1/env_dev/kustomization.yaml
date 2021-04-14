@@ -1,5 +1,5 @@
 bases:
-  - github.com/jtarte/sample_argocd/app_config?ref=master
+  - https://github.com/APILabs/Datapower-tutorials/Openshift/Lab1/deploy?ref=main
   - namespace.yaml
   patchesJson6902:
     - target:

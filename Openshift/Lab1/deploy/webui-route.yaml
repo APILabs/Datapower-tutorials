@@ -2,7 +2,6 @@ kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
   name: quickstart-webui
-  namespace: cp4i
 spec:
   host: quickstart-webui-cp4i.apps.demo.ibmdte.net
   to:

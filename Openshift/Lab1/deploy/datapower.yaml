@@ -2,7 +2,6 @@ apiVersion: datapower.ibm.com/v1beta2
 kind: DataPowerService
 metadata:
   name: quickstart
-  namespace: cp4i
 spec:
   license:
     accept: true

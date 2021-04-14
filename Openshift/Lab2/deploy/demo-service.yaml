@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: demo-quickstart
+  name: datapower-demo-svc
 spec:
   ports:
     - name: demosvc
@@ -9,7 +9,6 @@ spec:
       port: 6443
       targetPort: 6443
   selector:
-    app.kubernetes.io/name: datapower
+    app.kubernetes.io/instance: datapower-quickstart
   type: ClusterIP
   sessionAffinity: None
-

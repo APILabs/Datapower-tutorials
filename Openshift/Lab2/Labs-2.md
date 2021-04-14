@@ -24,9 +24,9 @@
 
 4. Clone the repository
     - Open the terminal application on the linux desktop and clone the repository.
-         ```git clone <https://github.com/APILabs/Datapower-tutorials.git>```
+         ```git clone https://github.com/APILabs/Datapower-tutorials.git```
 
-    - Change directory to  Datapower-tutorials/Openshift/Lab2/deploy
+    - Change directory to  /home/ibmuser/Datapower-tutorials/Openshift/Lab2
 
 5. Retrieve the openshift token
     - Retrive the login and openshift token from the console. and paste the oc login command .
@@ -41,15 +41,46 @@
     - IDP domain config
     - IDP domain local
     - IDP Domain certs
-    
+
     To create the config map of the config
-    ``` ```
+
+        ```
+            cd config/IDP
+            oc create configmap idp-domain-config --from-file=./IDP.cfg -n cp4i
+        ```
 
         To create the config map of the local
-    ``` ```
 
-        To create the config map of the certs
-    ```oc create secret generic idp-crypto-secret --from-file=Datapower-tutorials/Openshift/Lab2/ --from-file=Datapower-tutorials/Openshift/Lab2/```
+        ``` cd ../../local/IDP 
+            tar --directory=. -czvf idp-domain-local.tar.gz .
+            tar -tzvf idp-domain-local.tar.gz
+            oc create configmap idp-domain-local --from-file=./idp-domain-local.tar.gz -n cp4i
+
+         ```
+
+        To create the secret for the certs
+        ```
+        cd ../../secure/usrcerts/IDP
+        oc create secret generic idp-crypto-secret --from-file=./IDP-privkey.pem --from-file=./IDP-sscert.pem -n cp4i
+        ```
+
+        Update the datapower service yaml with the below snippet : 
+            ```
+                domains:
+                - name: default
+                dpApp:
+                    config:
+                    - web-mgmt
+                - name: IDP
+                certs:
+                - certType: "usrcerts"
+                    secret: "idp-crypto-secret"
+                dpApp:
+                    config:
+                    - "idp-domain-config"
+                    local:
+                    - "idp-domain-local"
+            ```
 
     Execute the commands to create the yaml files and create the resources.
     - Execute the below commands :
@@ -59,3 +90,6 @@
             This service exposes the demo service port from the datapower container
         - oc apply demo-route.yaml
             This route exposes the demo service endpoint from the datapower outside the openshift container
+
+        - test the service by calling the below endpoint 
+            

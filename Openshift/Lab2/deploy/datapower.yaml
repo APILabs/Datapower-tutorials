@@ -23,6 +23,15 @@ spec:
         config:
           - web-mgmt
       name: default
+    - name: IDP
+      certs:
+      - certType: "usrcerts"
+        secret: "idp-crypto-secret"
+      dpApp:
+        config:
+          - idp-domain-config"
+        local:
+          - idp-domain-local"
   version: 10.0-eus
   podManagementPolicy: OrderedReady
   replicas: 1

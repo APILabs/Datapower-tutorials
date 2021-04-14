@@ -5,7 +5,7 @@ metadata:
 spec:
   license:
     accept: true
-    use: production
+    use: nonproduction
   imagePullSecrets:
     - ibm-entitlement-key
   resources:

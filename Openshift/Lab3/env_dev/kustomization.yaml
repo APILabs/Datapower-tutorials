@@ -1,5 +1,5 @@
 bases:
-- https://github.com/APILabs/Datapower-tutorials/Openshift/Lab1/deploy?ref=main
+- https://github.com/APILabs/Datapower-tutorials/Openshift/Lab3/deploy?ref=main
 - namespace.yaml
 - ibm-entitlement-key.yaml
 patchesJson6902:

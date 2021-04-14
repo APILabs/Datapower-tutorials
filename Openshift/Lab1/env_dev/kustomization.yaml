@@ -1,7 +1,10 @@
-resources:
+bases:
+  - github.com/jtarte/sample_argocd/app_config?ref=master
   - namespace.yaml
-  - admin-secret.yaml
-  - web-mgmt-config.yaml
-  - datapower.yaml
-  - webui-route.yaml
-  - webui-service.yaml
+  patchesJson6902:
+    - target:
+        version: v1
+        group: route.openshift.io
+        kind: Route
+        name: quickstart-webui
+      path: route.yaml

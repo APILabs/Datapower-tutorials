@@ -9,7 +9,7 @@ spec:
       port: 9090
       targetPort: 9090
   selector:
-    app.kubernetes.io/instance: cp4i-quickstart
+    app.kubernetes.io/instance: datapower-quickstart
   type: ClusterIP
   sessionAffinity: None
 

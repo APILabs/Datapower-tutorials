@@ -2,9 +2,9 @@ bases:
 - https://github.com/APILabs/Datapower-tutorials/Openshift/Lab1/deploy?ref=main
 - namespace.yaml
 patchesJson6902:
-    - target:
-        version: v1
-        group: route.openshift.io
-        kind: Route
-        name: quickstart-webui
-      path: route.yaml
+  - target:
+      version: v1
+      group: route.openshift.io
+      kind: Route
+      name: quickstart-webui
+    path: webui-route.yaml

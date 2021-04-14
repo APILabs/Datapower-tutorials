@@ -1,13 +1,13 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: datapower-quickstart
+  name: demo-quickstart
 spec:
   ports:
-    - name: webui
+    - name: demosvc
       protocol: TCP
-      port: 9090
-      targetPort: 9090
+      port: 6443
+      targetPort: 6443
   selector:
     app.kubernetes.io/name: datapower
   type: ClusterIP

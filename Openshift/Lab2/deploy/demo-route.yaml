@@ -3,13 +3,13 @@ apiVersion: route.openshift.io/v1
 metadata:
   name: quickstart-webui
 spec:
-  host: quickstart-webui-cp4i.apps.demo.ibmdte.net
+  host: demo-svc-cp4i.apps.demo.ibmdte.net
   to:
     kind: Service
-    name: datapower-quickstart
+    name: demo-quickstart
     weight: 100
   port:
-    targetPort: webui
+    targetPort: demosvc
   tls:
     termination: passthrough
     insecureEdgeTerminationPolicy: None

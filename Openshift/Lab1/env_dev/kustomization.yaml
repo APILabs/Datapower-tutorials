@@ -1,7 +1,7 @@
 bases:
-  - https://github.com/APILabs/Datapower-tutorials/Openshift/Lab1/deploy?ref=main
-  - namespace.yaml
-  patchesJson6902:
+- https://github.com/APILabs/Datapower-tutorials/Openshift/Lab1/deploy?ref=main
+- namespace.yaml
+patchesJson6902:
     - target:
         version: v1
         group: route.openshift.io

@@ -7,4 +7,4 @@ patchesJson6902:
       group: route.openshift.io
       kind: Route
       name: quickstart-webui
-    path: webui-route.yaml
+    path: route.yaml

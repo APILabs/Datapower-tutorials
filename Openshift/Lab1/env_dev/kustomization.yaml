@@ -1,0 +1,7 @@
+resources:
+  - namespace.yaml
+  - admin-secret.yaml
+  - web-mgmt-config.yaml
+  - datapower.yaml
+  - webui-route.yaml
+  - webui-service.yaml

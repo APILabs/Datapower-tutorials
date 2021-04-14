@@ -35,9 +35,9 @@
 
 7. Execute the commands to create the yaml files and create the resources.
     - Execute the below commands :
-        - oc apply admin-secret.yaml
+        - oc apply -f admin-secret.yaml
             This creates the secret for the admin password
-        - oc apply web-mgmt-config.yaml
+        - oc apply -f web-mgmt-config.yaml
             This yaml consists of the below cfg file to enable the webui : 
                 ```ssh
                 web-mgmt
@@ -52,7 +52,7 @@
                 ```
         - oc apply datapower.yaml
             This yaml is the basic custom resource definition to create a datapower service
-        - oc apply webui-service.yaml
+        - oc apply -f webui-service.yaml
             This service exposes the webui from the datapower container
-        - oc apply webui-route.yaml
+        - oc apply -f webui-route.yaml
             This route exposes the webui from the datapower outside the openshift container

@@ -1,3 +1,0 @@
-- op: replace 
-  path: /spec/selector/app.kubernetes.io/instance
-  value: lab3-quickstart

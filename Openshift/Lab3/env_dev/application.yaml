@@ -1,15 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: datapower
-  namespace: argocd
+  name: datapower-quickstart
 spec:
   destination:
     name: ''
-    namespace: datapower
-    server: ''
+    namespace: lab3
+    server: 'https://kubernetes.default.svc'
   source:
-    path: Openshift/Lab1/deploy
+    path: Openshift/Lab3/env_dev
     repoURL: 'https://github.com/APILabs/Datapower-tutorials.git'
     targetRevision: HEAD
   project: default
@@ -17,12 +16,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-  sync:
-    comparedTo:
-      destination:
-        namespace: datapower
-        server: https://kubernetes.default.svc
-      source:
-        path: Openshift/Lab1/deploy
-        repoURL: https://github.com/APILabs/Datapower-tutorials.git
-        targetRevision: HEAD

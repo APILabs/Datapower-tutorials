@@ -9,3 +9,8 @@ patchesJson6902:
       kind: Route
       name: quickstart-webui
     path: route.yaml
+  - target:
+      version: v1
+      kind: Service
+      name: datapower-quickstart
+    path: service.yaml
